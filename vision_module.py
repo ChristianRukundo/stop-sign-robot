@@ -10,21 +10,35 @@ class VisionProcessor:
     """
 
     def __init__(self, config: dict):
-        self.config = config
+        self.config = {
+            "index": int(config["index"]),
+            "frame_width": int(config["frame_width"]),
+            "frame_height": int(config["frame_height"]),
+            "cascade_path": config["cascade_path"],
+            "scale_factor": float(config["scale_factor"]),
+            "min_neighbors": int(config["min_neighbors"]),
+        }
+
         self.cap = None
         self.latest_frame = None
         self.is_running = False
         self._thread = None
 
-        self.classifier = cv2.CascadeClassifier(config["cascade_path"])
+        self.classifier = cv2.CascadeClassifier(self.config["cascade_path"])
         if self.classifier.empty():
-            raise IOError(f"Could not load Haar Cascade from {config['cascade_path']}")
+            raise IOError(
+                f"Could not load Haar Cascade from {self.config['cascade_path']}"
+            )
 
     def start(self) -> bool:
         """Starts the camera and the frame-grabbing thread."""
-        self.cap = cv2.VideoCapture(self.config["index"])
+
+        camera_index = self.config["index"]
+
+        self.cap = cv2.VideoCapture(camera_index, cv2.CAP_DSHOW)
+
         if not self.cap.isOpened():
-            logging.error("Cannot open camera.")
+            logging.error(f"Cannot open camera at index {camera_index}.")
             return False
 
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.config["frame_width"])
@@ -33,16 +47,20 @@ class VisionProcessor:
         self.is_running = True
         self._thread = threading.Thread(target=self._run, daemon=True)
         self._thread.start()
-        logging.info("VisionProcessor started.")
+
+        logging.info(
+            f"VisionProcessor started successfully on camera index {camera_index}."
+        )
         return True
 
     def _run(self):
         """The main loop for the thread that continuously reads frames."""
         while self.is_running:
-            if self.cap is None:
-                logging.error("Camera capture object is None.")
-                time.sleep(0.5)
+            if not self.cap or not self.cap.isOpened():
+                logging.error("Camera is not available during threaded run.")
+                time.sleep(1)
                 continue
+
             ret, frame = self.cap.read()
             if not ret:
                 logging.warning("Failed to grab frame from camera. Retrying...")
@@ -64,6 +82,7 @@ class VisionProcessor:
         )
 
         detection = len(stop_signs) > 0
+
         return detection, list(stop_signs)
 
     def stop(self):
