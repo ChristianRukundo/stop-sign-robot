@@ -1,1 +1,61 @@
-/venv
+# Python compiled files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Package and build files
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+coverage.xml
+*.cover
+htmlcov/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Logs and temporary files
+*.log
+*.tmp
+temp/
+
+# Dependency files
+Pipfile.lock
+requirements.txt.lock
+
+# Environment variables
+.env
+*.env
+
+# Database files
+*.db
+*.sqlite3
+
+# Cache and local data
+*.cache
+local/
+
+# OpenCV cascade files (specific to your project)
+*.xml
