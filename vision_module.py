@@ -39,6 +39,10 @@ class VisionProcessor:
     def _run(self):
         """The main loop for the thread that continuously reads frames."""
         while self.is_running:
+            if self.cap is None:
+                logging.error("Camera capture object is None.")
+                time.sleep(0.5)
+                continue
             ret, frame = self.cap.read()
             if not ret:
                 logging.warning("Failed to grab frame from camera. Retrying...")
@@ -60,7 +64,7 @@ class VisionProcessor:
         )
 
         detection = len(stop_signs) > 0
-        return detection, stop_signs
+        return detection, list(stop_signs)
 
     def stop(self):
         """Stops the thread and releases the camera."""
