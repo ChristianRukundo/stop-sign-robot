@@ -21,3 +21,10 @@
 2025-06-20 10:06:05,540 [INFO] Shutting down system...
 2025-06-20 10:06:05,982 [INFO] VisionProcessor stopped.
 2025-06-20 10:06:05,994 [INFO] Shutdown complete.
+2025-06-20 10:10:38,585 [INFO] VisionProcessor started successfully on camera index 0.
+2025-06-20 10:10:38,586 [ERROR] Failed to connect to serial port COM3: could not open port 'COM3': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2025-06-20 10:10:38,586 [WARNING] Running without serial communication.
+2025-06-20 10:10:38,586 [INFO] System is running. Press 'q' to exit.
+2025-06-20 10:12:33,612 [INFO] Shutting down system...
+2025-06-20 10:12:34,033 [INFO] VisionProcessor stopped.
+2025-06-20 10:12:34,045 [INFO] Shutdown complete.
